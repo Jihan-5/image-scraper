@@ -24,7 +24,7 @@ Reason for Failure: The browser blocked the preflight OPTIONS request when allow
 
 Improvement: In production, lock down allow_origins to the deployed frontend URL only, and switch to secure cookies.
 
-2. Environment Variable Handling
+#2. Environment Variable Handling
 Challenge: React (Create‐React‐App) does not support Vite’s import.meta.env.
 
 Chosen Approach: Use CRA convention process.env.REACT_APP_*.
@@ -41,7 +41,7 @@ Reason for Failure: CRA’s webpack config strips out import.meta.
 
 Improvement: Migrate to Vite if we want modern env syntax, or stick with CRA’s standards.
 
-3. URL Validation and Deduplication
+#3. URL Validation and Deduplication
 Accepting multiple URLs (comma‐separated or multiline) introduces malformed input risk.
 
 Chosen Package: yup or validator in JS for schema validation.
@@ -60,7 +60,7 @@ Reason for Failure: The synchronous validation loop caused React rendering to pa
 
 Improvement: Throttle validation by chunking the URL list or using a Web Worker.
 
-4. Asynchronous Parallel Scraping
+#4. Asynchronous Parallel Scraping
 Challenge: Sending multiple HTTP requests in parallel to scrape image URLs from several domains.
 
 Chosen Package: Python’s httpx with asyncio.gather, or Node’s Promise.all.
@@ -88,7 +88,7 @@ Reason for Failure: By default, gather propagates the first exception unless ret
 
 Improvement: Catch per‐task failures and log URLs that failed, continuing with the rest.
 
-5. UI Responsiveness Under Heavy Load
+#5. UI Responsiveness Under Heavy Load
 Rendering hundreds of images can freeze the React UI.
 
 Chosen Package: react-virtualized or react-window for virtual scrolling.
@@ -105,7 +105,7 @@ Reason for Failure: The browser ran out of GPU memory when too many high‐resol
 
 Improvement: Lazy‐load image components with loading="lazy" and virtualize the grid.
 
-6. State Management Complexity
+#6. State Management Complexity
 Managing loading, error, and data states across nested components proved cumbersome.
 
 Chosen Pattern: Custom React Hooks (useScraper, useAuth) with Context for global state.
@@ -122,7 +122,7 @@ Reason for Failure: The shared isLoading flag toggled off by the last‐finishin
 
 Improvement: Maintain a request‐ID token or stack counter to track concurrent calls precisely.
 
-7. Authentication and Authorization
+#7. Authentication and Authorization
 Challenge: Securing endpoints and preserving stateless sessions via JWT.
 
 Chosen Packages: python-jose, passlib[bcrypt].
@@ -142,7 +142,7 @@ Reason for Failure: JWTs cannot be invalidated once issued without a blacklist.
 
 Improvement: Introduce Redis‐backed token blacklisting or switch to opaque tokens with server‐side session storage.
 
-8. Form‐Encoded Login vs JSON Body
+#8. Form‐Encoded Login vs JSON Body
 FastAPI’s OAuth2PasswordRequestForm expects application/x-www-form-urlencoded, but the frontend was sending JSON.
 
 Chosen Fix: Switch frontend login to use FormData:
@@ -160,7 +160,7 @@ Reason for Failure: FastAPI validation rejects JSON when a Form dependency is de
 
 Improvement: Add a separate JSON‐based login endpoint or unify on one format.
 
-9. Dependency Version Conflicts
+#9. Dependency Version Conflicts
 Upgrading Pydantic to v2 broke compatibility with FastAPI < 0.100.
 
 Chosen Resolution: Upgrade FastAPI to >=0.100.0 to support Pydantic 2, or pin Pydantic <2.
@@ -171,7 +171,7 @@ Reason for Failure: The FastAPI version constraints in requirements.txt clashed 
 
 Improvement: Use a pyproject.toml with Poetry for deterministic resolution and lock‐file enforcement.
 
-10. Database Migrations & Schema Evolution
+#10. Database Migrations & Schema Evolution
 Challenge: Evolving the SQLite schema without corrupting existing data.
 
 Chosen Package: alembic for migration scripts.
@@ -190,7 +190,7 @@ Reason for Failure: SQLite cannot drop or rename columns easily without a full t
 
 Improvement: Write manual alembic scripts for complex schema changes, or switch to PostgreSQL for production.
 
-11. Testing & Mocking HTTP Calls
+#11. Testing & Mocking HTTP Calls
 Challenge: Writing unit tests that do not hit real network endpoints.
 
 Chosen Package: pytest, requests-mock, or for frontend, msw (Mock Service Worker).
@@ -208,7 +208,7 @@ Reason for Failure: Missing polyfills for global.fetch.
 
 Improvement: Use whatwg-fetch polyfill or switch to Node test runner.
 
-12. TypeScript Typing and TSX Compilation
+#12. TypeScript Typing and TSX Compilation
 Challenge: Ensuring all props and states are correctly typed.
 
 Chosen Config: strict: true in tsconfig.json.
@@ -230,7 +230,7 @@ Reason for Failure: Inconsistent naming across hook and import paths.
 
 Improvement: Enforce a naming convention and add lint rules to catch mismatches.
 
-13. Bundler and Dev‐Server Errors
+#13. Bundler and Dev‐Server Errors
 Challenge: Missing Webpack HMR plugins and react‐refresh entries after a bad npm install.
 
 Chosen Action: Delete node_modules and package-lock.json, re‐run npm install.
@@ -241,7 +241,7 @@ Reason for Failure: react-scripts could not locate the expected Webpack plugins.
 
 Improvement: Migrate to Vite for faster, more predictable builds and simpler config.
 
-14. Improving Accessibility
+#14. Improving Accessibility
 All interactive elements must have proper aria-label and keyboard focus.
 
 Chosen Tool: eslint-plugin-jsx-a11y for linting.
@@ -258,7 +258,7 @@ Reason for Failure: Overlooked accessibility in first iteration.
 
 Improvement: Add automated a11y tests with jest-axe.
 
-15. Future Enhancements & Next Steps
+#15. Future Enhancements & Next Steps
 Dockerization of both frontend and backend to ensure environment parity.
 
 CI/CD Pipeline: Use GitHub Actions to run tests, linting, and deploy to staging.
