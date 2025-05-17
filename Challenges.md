@@ -29,13 +29,11 @@ Challenge: React (Create‐React‐App) does not support Vite’s import.meta.en
 
 Chosen Approach: Use CRA convention process.env.REACT_APP_*.
 
-Implementation:
-```
+**Implementation**:
 ts
 Copy
 Edit
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:8000/api";
-'''
+'''const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:8000/api";'''
 Logic Issue: Using import.meta.env led to undefined at runtime.
 
 Reason for Failure: CRA’s webpack config strips out import.meta.
@@ -47,13 +45,13 @@ Accepting multiple URLs (comma‐separated or multiline) introduces malformed in
 
 Chosen Package: yup or validator in JS for schema validation.
 
-Implementation:
+**Implementation**:
 ts
 Copy
 Edit
-import * as yup from "yup";
+'import * as yup from "yup";
 
-const urlSchema = yup.string().url().required();
+const urlSchema = yup.string().url().required();'
 Logic Issue: Validating a large list at once blocked the UI thread.
 
 Reason for Failure: The synchronous validation loop caused React rendering to pause.
@@ -65,9 +63,9 @@ Challenge: Sending multiple HTTP requests in parallel to scrape image URLs from 
 
 Chosen Package: Python’s httpx with asyncio.gather, or Node’s Promise.all.
 
-Implementation (FastAPI/Python):
+**Implementation (FastAPI/Python):**
 
-python
+'''python
 Copy
 Edit
 import httpx
@@ -86,7 +84,7 @@ Logic Issue: Unhandled exceptions in gather crashed the entire task.
 
 Reason for Failure: By default, gather propagates the first exception unless return_exceptions=True.
 
-Improvement: Catch per‐task failures and log URLs that failed, continuing with the rest.
+Improvement: Catch per‐task failures and log URLs that failed, continuing with the rest.'''
 
 ## 5. UI Responsiveness Under Heavy Load
 Rendering hundreds of images can freeze the React UI.
